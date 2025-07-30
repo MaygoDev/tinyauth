@@ -26,6 +26,7 @@ type OAuthProviders struct {
 	Github    *oauth.OAuth
 	Google    *oauth.OAuth
 	Microsoft *oauth.OAuth
+	Discord   *oauth.OAuth
 }
 
 // SessionCookie is the cookie for the session (exculding the expiry)

@@ -37,6 +37,7 @@ var rootCmd = &cobra.Command{
 		config.Secret = utils.GetSecret(config.Secret, config.SecretFile)
 		config.GithubClientSecret = utils.GetSecret(config.GithubClientSecret, config.GithubClientSecretFile)
 		config.GoogleClientSecret = utils.GetSecret(config.GoogleClientSecret, config.GoogleClientSecretFile)
+		config.DiscordClientSecret = utils.GetSecret(config.DiscordClientSecret, config.DiscordClientSecretFile)
 		config.GenericClientSecret = utils.GetSecret(config.GenericClientSecret, config.GenericClientSecretFile)
 
 		validator := validator.New()
@@ -74,6 +75,9 @@ var rootCmd = &cobra.Command{
 			GithubClientSecret:  config.GithubClientSecret,
 			GoogleClientId:      config.GoogleClientId,
 			GoogleClientSecret:  config.GoogleClientSecret,
+			DiscordClientId:     config.DiscordClientId,
+			DiscordClientSecret: config.DiscordClientSecret,
+			DiscordGuildId:      config.DiscordGuildId,
 			GenericClientId:     config.GenericClientId,
 			GenericClientSecret: config.GenericClientSecret,
 			GenericScopes:       strings.Split(config.GenericScopes, ","),
@@ -193,6 +197,10 @@ func init() {
 	rootCmd.Flags().String("google-client-id", "", "Google OAuth client ID.")
 	rootCmd.Flags().String("google-client-secret", "", "Google OAuth client secret.")
 	rootCmd.Flags().String("google-client-secret-file", "", "Google OAuth client secret file.")
+	rootCmd.Flags().String("discord-client-id", "", "Discord OAuth client ID.")
+	rootCmd.Flags().String("discord-client-secret", "", "Discord OAuth client secret.")
+	rootCmd.Flags().String("discord-client-secret-file", "", "Discord OAuth client secret file.")
+	rootCmd.Flags().String("discord-client-guild-id", "", "Discord OAuth guild ID.")
 	rootCmd.Flags().String("generic-client-id", "", "Generic OAuth client ID.")
 	rootCmd.Flags().String("generic-client-secret", "", "Generic OAuth client secret.")
 	rootCmd.Flags().String("generic-client-secret-file", "", "Generic OAuth client secret file.")
@@ -204,7 +212,7 @@ func init() {
 	rootCmd.Flags().Bool("generic-skip-ssl", false, "Skip SSL verification for the generic OAuth provider.")
 	rootCmd.Flags().Bool("disable-continue", false, "Disable continue screen and redirect to app directly.")
 	rootCmd.Flags().String("oauth-whitelist", "", "Comma separated list of email addresses to whitelist when using OAuth.")
-	rootCmd.Flags().String("oauth-auto-redirect", "none", "Auto redirect to the specified OAuth provider if configured. (available providers: github, google, generic)")
+	rootCmd.Flags().String("oauth-auto-redirect", "none", "Auto redirect to the specified OAuth provider if configured. (available providers: github, google, discord, generic)")
 	rootCmd.Flags().Int("session-expiry", 86400, "Session (cookie) expiration time in seconds.")
 	rootCmd.Flags().Int("login-timeout", 300, "Login timeout in seconds after max retries reached (0 to disable).")
 	rootCmd.Flags().Int("login-max-retries", 5, "Maximum login attempts before timeout (0 to disable).")

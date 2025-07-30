@@ -2,6 +2,7 @@ import { LoginForm } from "@/components/auth/login-form";
 import { GenericIcon } from "@/components/icons/generic";
 import { GithubIcon } from "@/components/icons/github";
 import { GoogleIcon } from "@/components/icons/google";
+import { DiscordIcon } from "@/components/icons/discord";
 import {
   Card,
   CardHeader,
@@ -139,6 +140,16 @@ export const LoginPage = () => {
                 loading={oauthMutation.isPending && oauthMutation.variables === "github"}
                 disabled={oauthMutation.isPending || loginMutation.isPending}
               />
+            )}
+            {configuredProviders.includes("discord") && (
+                <OAuthButton
+                    title="Discord"
+                    icon={<DiscordIcon />}
+                    className="w-full"
+                    onClick={() => oauthMutation.mutate("discord")}
+                    loading={oauthMutation.isPending && oauthMutation.variables === "discord"}
+                    disabled={oauthMutation.isPending || loginMutation.isPending}
+                />
             )}
             {configuredProviders.includes("generic") && (
               <OAuthButton

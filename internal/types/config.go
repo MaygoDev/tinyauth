@@ -16,6 +16,10 @@ type Config struct {
 	GoogleClientId          string `mapstructure:"google-client-id"`
 	GoogleClientSecret      string `mapstructure:"google-client-secret"`
 	GoogleClientSecretFile  string `mapstructure:"google-client-secret-file"`
+	DiscordClientId         string `mapstructure:"discord-client-id"`
+	DiscordClientSecret     string `mapstructure:"discord-client-secret"`
+	DiscordClientSecretFile string `mapstructure:"discord-client-secret-file"`
+	DiscordGuildId          string `mapstructure:"discord-guild-id"`
 	GenericClientId         string `mapstructure:"generic-client-id"`
 	GenericClientSecret     string `mapstructure:"generic-client-secret"`
 	GenericClientSecretFile string `mapstructure:"generic-client-secret-file"`
@@ -27,7 +31,7 @@ type Config struct {
 	GenericSkipSSL          bool   `mapstructure:"generic-skip-ssl"`
 	DisableContinue         bool   `mapstructure:"disable-continue"`
 	OAuthWhitelist          string `mapstructure:"oauth-whitelist"`
-	OAuthAutoRedirect       string `mapstructure:"oauth-auto-redirect" validate:"oneof=none github google generic"`
+	OAuthAutoRedirect       string `mapstructure:"oauth-auto-redirect" validate:"oneof=none github google discord generic"`
 	SessionExpiry           int    `mapstructure:"session-expiry"`
 	LogLevel                int8   `mapstructure:"log-level" validate:"min=-1,max=5"`
 	Title                   string `mapstructure:"app-title"`
@@ -65,6 +69,9 @@ type OAuthConfig struct {
 	GithubClientSecret  string
 	GoogleClientId      string
 	GoogleClientSecret  string
+	DiscordClientId     string
+	DiscordClientSecret string
+	DiscordGuildId      string
 	GenericClientId     string
 	GenericClientSecret string
 	GenericScopes       []string

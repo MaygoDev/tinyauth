@@ -15,6 +15,7 @@ type Providers struct {
 	Config  types.OAuthConfig
 	Github  *oauth.OAuth
 	Google  *oauth.OAuth
+	Discord *oauth.OAuth
 	Generic *oauth.OAuth
 }
 
@@ -45,6 +46,17 @@ func NewProviders(config types.OAuthConfig) *Providers {
 		}, false)
 	}
 
+	if config.DiscordClientId != "" && config.DiscordClientSecret != "" {
+		log.Info().Msg("Initializing Discord OAuth")
+		providers.Discord = oauth.NewOAuth(oauth2.Config{
+			ClientID:     config.DiscordClientId,
+			ClientSecret: config.DiscordClientSecret,
+			RedirectURL:  fmt.Sprintf("%s/api/oauth/callback/discord", config.AppURL),
+			Scopes:       DiscordScopes(),
+			Endpoint:     endpoints.Discord,
+		}, false)
+	}
+
 	if config.GenericClientId != "" && config.GenericClientSecret != "" {
 		log.Info().Msg("Initializing Generic OAuth")
 		providers.Generic = oauth.NewOAuth(oauth2.Config{
@@ -68,6 +80,8 @@ func (providers *Providers) GetProvider(provider string) *oauth.OAuth {
 		return providers.Github
 	case "google":
 		return providers.Google
+	case "discord":
+		return providers.Discord
 	case "generic":
 		return providers.Generic
 	default:
@@ -114,6 +128,24 @@ func (providers *Providers) GetUser(provider string) (constants.Claims, error) {
 		}
 
 		log.Debug().Msg("Got user from google")
+
+		return user, nil
+	case "discord":
+		if providers.Discord == nil {
+			log.Debug().Msg("Discord provider not configured")
+			return user, nil
+		}
+
+		client := providers.Discord.GetClient()
+
+		log.Debug().Msg("Got client from discord")
+
+		user, err := GetDiscordUser(client)
+		if err != nil {
+			return user, err
+		}
+
+		log.Debug().Msg("Got user from discord")
 
 		return user, nil
 	case "generic":
